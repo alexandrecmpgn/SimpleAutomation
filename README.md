@@ -32,7 +32,7 @@ Pour créer une nouvelle session, exécutez recorder.py :
 python3 recorder.py
 ```
 
-Le script vous demandera un nom de session et vous pourrez enregistrer les actions (la touche d'arrêt est celle définit avec save_stop_key.py).
+Le script vous demandera un nom de session et vous pourrez enregistrer les actions (la touche d'arrêt est celle définie avec save_stop_key.py).
 
 Enfin, pour lancer l'exécution d'une session, exécutez player.py
 
