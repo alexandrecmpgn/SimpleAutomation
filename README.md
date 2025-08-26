@@ -41,3 +41,9 @@ python3 player.py
 ```
 
 Le nom de la session vous sera demandé. Un décompte de 5 secondes aura lieu avant l'exécution de l'entièreté des actions.
+
+Pour nettoyer l'ensemble des données (sessions, stop_key, ...), utilisez le script clean.py
+
+```bash
+python3 clean.py
+```

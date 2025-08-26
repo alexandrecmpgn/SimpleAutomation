@@ -1,3 +1,9 @@
+class SESSION(object):
+    def __init__(self):
+        self.actions = []
+        self.randomize_sleep = 0
+        self.timer_start = 5
+
 class ACTION_KBRD(object):
     def __init__(self, event, delay):
         self.event = event

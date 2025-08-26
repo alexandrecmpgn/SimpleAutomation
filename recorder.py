@@ -1,5 +1,5 @@
 from pynput import mouse, keyboard
-from strct import ACTION_KBRD, ACTION_MOUSE
+from strct import ACTION_KBRD, ACTION_MOUSE, SESSION
 from time import time
 import pickle
 import os
@@ -17,9 +17,11 @@ NAME = None
 
 def save_data():
     global ACTIONS, NAME 
+    project = SESSION()
+    project.actions = ACTIONS
     print("Sauvegarde des actions dans le fichier " + str(NAME) + ".pkl ...")
     with open(PATH_SESSIONS + str(NAME) + ".pkl", "wb") as f:
-        pickle.dump(ACTIONS, f)
+        pickle.dump(project, f)
     f.close()
 
 def on_click(x, y, button, pressed):
