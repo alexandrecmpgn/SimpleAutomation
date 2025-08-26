@@ -6,6 +6,8 @@ from strct import ACTION_MOUSE, ACTION_KBRD
 
 import pynput.keyboard, pynput.mouse
 
+from vars import PATH_SESSIONS, STOP_KEY_FILENAME
+
 ACTIONS = []
 
 def do_actions():
@@ -25,7 +27,7 @@ def do_actions():
             else: mouse.release(action._type)
 def main():
     global ACTIONS
-    sessions = os.listdir("sessions/")
+    sessions = os.listdir(PATH_SESSIONS)
     if not len(sessions):
         print("Aucune session enregistrée ! Utilisez recorder.py pour en créer une !")
         exit()
@@ -37,12 +39,12 @@ def main():
         name = input("Entrez le nom de la session à charger >>> ")
         try:
             print("Chargement des actions...")
-            with open("sessions/" + name + ".pkl", 'rb') as f:
+            with open(PATH_SESSIONS + name + ".pkl", 'rb') as f:
                 ACTIONS = pickle.load(f)
             f.close()
             print(str(len(ACTIONS)) + " actions chargées !")
         except:
-            raise FileNotFoundError("Impossible de charger sessions/" + name + ".pkl !")
+            raise FileNotFoundError("Impossible de charger PATH_SESSIONS" + name + ".pkl !")
         for i in range(5):
             if 5 - i != 0 and 5 - i != 1: print("Démarrage dans " + str(5 - i) + " secondes...")
             else: print("Démarrage dans " + str(5 - i) + " seconde...")

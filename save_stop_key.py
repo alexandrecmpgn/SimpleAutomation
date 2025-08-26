@@ -1,12 +1,14 @@
 from pynput import keyboard
 import pickle
 
+from vars import STOP_KEY_FILENAME
+
 keyboard_listener = None
 
 def on_press(key):
     global keyboard_listener
     print("Nouvelle touche d\'arrêt : " + str(key) + " !")
-    with open('stop_key.pkl', 'wb') as f:
+    with open(STOP_KEY_FILENAME, 'wb') as f:
         pickle.dump(key, f)
     f.close()
     keyboard_listener.stop()

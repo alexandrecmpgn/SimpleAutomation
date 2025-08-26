@@ -25,7 +25,7 @@ Commencez par mettre en place une touche d'arrêt. C'est une touche qui servira 
 python3 save_stop_key.py
 ```
 
-Les actions sont enregistrées sous forme de sessions (sauvegardées dans sessions/). 
+Les actions sont enregistrées sous forme de sessions (sauvegardées dans PATH_SESSIONS). 
 Pour créer une nouvelle session, exécutez recorder.py : 
 
 ```bash 

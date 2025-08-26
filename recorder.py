@@ -2,6 +2,8 @@ from pynput import mouse, keyboard
 from strct import ACTION_KBRD, ACTION_MOUSE
 from time import time
 import pickle
+import os
+from vars import PATH_SESSIONS, STOP_KEY_FILENAME
 
 ACTIONS = []
 
@@ -16,7 +18,7 @@ NAME = None
 def save_data():
     global ACTIONS, NAME 
     print("Sauvegarde des actions dans le fichier " + str(NAME) + ".pkl ...")
-    with open("sessions/" + str(NAME) + ".pkl", "wb") as f:
+    with open(PATH_SESSIONS + str(NAME) + ".pkl", "wb") as f:
         pickle.dump(ACTIONS, f)
     f.close()
 
@@ -35,9 +37,15 @@ def on_press(key):
     global START_TIMESTAMP, mouse_listener, keyboard_listener, ACTIONS
     _timestamp = time()
     try:
-        print("Enregistrement d\'une touche " + str(key.char) + " avec un délai de " + str(_timestamp - START_TIMESTAMP) + " secondes...")
-        new_event = ACTION_KBRD(key, _timestamp - START_TIMESTAMP)
-        ACTIONS.append(new_event)
+        if key == STOP_KEY: 
+            print("Arrêt des listeners...")
+            save_data()
+            mouse_listener.stop()
+            keyboard_listener.stop()
+        else:
+            print("Enregistrement d\'une touche " + str(key.char) + " avec un délai de " + str(_timestamp - START_TIMESTAMP) + " secondes...")
+            new_event = ACTION_KBRD(key, _timestamp - START_TIMESTAMP)
+            ACTIONS.append(new_event)
     except AttributeError:
         if key == STOP_KEY: 
             print("Arrêt des listeners...")
@@ -54,14 +62,21 @@ def main():
     global START_TIMESTAMP, mouse_listener, keyboard_listener, STOP_KEY, NAME
     print("Chargement de la touche d\'arrêt...")
     try:
-        with open('stop_key.pkl', 'rb') as f:
+        with open(STOP_KEY_FILENAME, 'rb') as f:
             STOP_KEY = pickle.load(f)
         f.close()
         print("Touche d\'arrêt : " + str(STOP_KEY) + " !")
     except:
         raise FileNotFoundError("Impossible de charger le fichier stop_key.pkl ! Avez-vous enregistrer une touche avec save_stop_key.py ?")
-
+    sessions = os.listdir(PATH_SESSIONS)
+    print("Liste des sessions disponibles : ")
+    for session in sessions:
+        try: print("+ " + session.split(".pkl")[0])
+        except: pass 
     NAME = input("Entrez le nom de la session >>> ")
+    if NAME + ".pkl" in sessions:
+        if input(NAME + " est déjà une session enregistrée, l\'écraser ? o/n >>> ").lower() != 'o': exit()
+        else: pass
 
     mouse_listener = mouse.Listener(on_click=on_click)
     keyboard_listener = keyboard.Listener(on_press=on_press)
