@@ -1,0 +1,15 @@
+[project]
+name = "SimpleAutomation"
+version = "0.1.0"
+description = "Un petit package pour automatiser rapidement des tâches sur son ordinateur sous forme de sessions."
+readme = "README.md"
+requires-python = ">=3.8"
+license = {text = "CC-BY-4.0"}
+authors = [
+  {name = "Alexandre CMPGN", email = "alexandre.cmpgn@gmail.com"}
+]
+dependencies = ["pynput>=1.8.1"]
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
