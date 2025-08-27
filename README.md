@@ -6,7 +6,7 @@ Un script simple pour automatiser rapidement des tâches (souris, clavier, ...) 
 
 ## 📦 Installation
 
-Commencez par cloner le dépôt et installer les dépendances :
+Commencez par cloner le dépôt, installer les dépendances et initialiser les répertoires :
 
 ```bash
 # Clonez le dépôt
@@ -15,6 +15,9 @@ cd SimpleAutomation/
 
 # Installez les dépendances
 pip3 install -r requirements.txt
+
+# Initialisez les répertoires
+python3 init.py
 ```
 
 ## ⚙️ Utilisation
