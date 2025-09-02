@@ -1,7 +1,7 @@
 import os
 import pickle
-from vars import PATH_SESSIONS
-from strct import SESSION, ACTION_KBRD, ACTION_MOUSE
+from simpleautomation.vars import PATH_SESSIONS
+from simpleautomation.strct import SESSION, ACTION_KBRD, ACTION_MOUSE
 
 def main():
     print("Configuration avancée des sessions : ")

@@ -1,1 +1,2 @@
 pynput>=1.8.1
+platformdirs>=4.4.0

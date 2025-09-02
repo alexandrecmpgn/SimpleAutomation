@@ -1,7 +1,7 @@
 import os
-from vars import PATH_SESSIONS, STOP_KEY_FILENAME
+from simpleautomation.vars import PATH_SESSIONS, STOP_KEY_FILENAME
 
-def main():
+def clean_all():
     first_choice = input("Voulez-vous supprimer toutes les données (sessions, stop_key, ...) ? o/n >>> ")
     if first_choice.lower() != 'o': exit()
     second_choice = input("Seconde confirmation o/n >>> ")
@@ -18,4 +18,3 @@ def main():
         try: os.remove(PATH_SESSIONS + session)
         except: print("Erreur lors de la suppression !")
     print("Nettoyage terminé !")
-if __name__ == '__main__': main()

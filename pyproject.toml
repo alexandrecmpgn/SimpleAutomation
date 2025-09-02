@@ -8,7 +8,13 @@ license = {text = "CC-BY-4.0"}
 authors = [
   {name = "Alexandre CMPGN", email = "alexandre.cmpgn@gmail.com"}
 ]
-dependencies = ["pynput>=1.8.1"]
+dependencies = ["pynput>=1.8.1", "platformdirs>=4.4.0"]
+
+[tool.setuptools]
+package-dir = {"" = "src/"}
+
+[tool.setuptools.packages.find]
+where = ["src/"]
 
 [build-system]
 requires = ["setuptools>=61.0"]
