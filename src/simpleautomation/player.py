@@ -39,14 +39,14 @@ class PLAYER(object):
                 except: pass 
             if name is None: name = input("Entrez le nom de la session à charger >>> ")
             try:
-                simpleautomation.log.log("Chargement des self.actions...")
+                simpleautomation.log.log("Chargement des actions...")
                 with open(PATH_SESSIONS + name + ".pkl", 'rb') as f:
                     project = pickle.load(f)
                 self.actions = project.actions
                 if timer_start is not None and type(timer_start) == int: 
                     simpleautomation.log.log("La session sera effectuée après une attente de " + str(timer_start) + " sec !")
                     project.timer_start = timer_start
-                if project.randomize_sleep != 0: simpleautomation.log.log("self.randomize_sleep détecté avec une valeur de " + str(project.randomize_sleep) + " sec !")
+                if project.randomize_sleep != 0: simpleautomation.log.log("randomize_sleep détecté avec une valeur de " + str(project.randomize_sleep) + " sec !")
                 self.randomize_sleep = project.randomize_sleep
                 f.close()
                 simpleautomation.log.log(str(len(self.actions)) + " actions chargées !")

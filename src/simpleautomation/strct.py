@@ -3,6 +3,11 @@ class SESSION(object):
         self.actions = []
         self.randomize_sleep = 0
         self.timer_start = 5
+    def to_dict(self):
+        return {
+            "randomize_sleep" : self.randomize_sleep,
+            "timer_start" : self.timer_start
+        }
 
 class ACTION_KBRD(object):
     def __init__(self, event, delay):

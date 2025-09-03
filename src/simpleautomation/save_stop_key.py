@@ -25,6 +25,3 @@ def main():
     simpleautomation.log.log("Pressez la touche qui servira à arrêter l\'enregistrement...")
     keyboard_listener.join()
 
-
-
-if __name__ == '__main__': main()
