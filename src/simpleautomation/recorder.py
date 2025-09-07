@@ -5,6 +5,7 @@ import pickle
 import os
 from simpleautomation.vars import PATH_SESSIONS, STOP_KEY_FILENAME
 import simpleautomation.log
+from simpleautomation.tools import get_sessions
 
 class RECORDER(object):
     def __init__(self):
@@ -66,7 +67,7 @@ class RECORDER(object):
             simpleautomation.log.log("Touche d\'arrêt : " + str(self.stop_key) + " !")
         except:
             raise FileNotFoundError("Impossible de charger le fichier stop_key.pkl ! Avez-vous enregistrer une touche avec save_stop_key.py ?")
-        sessions = os.listdir(PATH_SESSIONS)
+        sessions = get_sessions()
         simpleautomation.log.log("Liste des sessions disponibles : ")
         for session in sessions:
             try: simpleautomation.log.log("+ " + session.split(".pkl")[0])

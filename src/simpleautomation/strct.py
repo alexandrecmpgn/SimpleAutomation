@@ -8,12 +8,19 @@ class SESSION(object):
             "randomize_sleep" : self.randomize_sleep,
             "timer_start" : self.timer_start
         }
+    def from_dict(self, dict):
+        self.randomize_sleep = dict["randomize_sleep"]
+        self.timer_start = dict["timer_start"]
 
 class ACTION_KBRD(object):
     def __init__(self, event, delay):
         self.event = event
         self.delay = delay 
     def __str__(self): return "[EVENT CLAVIER " + str(self.event) + " AVEC DÉLAI " + str(self.delay) + " sec]"
+    def to_dict(self): return {
+        "event" : str(self.event),
+        "delay" : self.delay
+    }
 
 class ACTION_MOUSE(object):
     def __init__(self, x, y, _type, pressed, delay):
@@ -23,3 +30,10 @@ class ACTION_MOUSE(object):
         self.pressed = pressed
         self.delay = delay
     def __str__(self): return "[EVENT SOURIS " + str((self.x, self.y)) + " " + str(self._type) + " " + str(self.pressed) + " AVEC DÉLAI " + str(self.delay) + "sec]"
+    def to_dict(self): return {
+        "x" : self.x,
+        "y" : self.y,
+        "_type" : str(self._type),
+        "pressed" : str(self.pressed),
+        "delay" : self.delay
+    }

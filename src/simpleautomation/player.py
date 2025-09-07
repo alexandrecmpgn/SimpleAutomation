@@ -3,6 +3,7 @@ import os
 from time import sleep
 from random import randint
 import simpleautomation.log
+from simpleautomation.tools import get_sessions
 
 from simpleautomation.strct import ACTION_MOUSE, ACTION_KBRD, SESSION
 
@@ -28,7 +29,7 @@ class PLAYER(object):
                 if action.pressed: self.mouse.press(action._type)
                 else: self.mouse.release(action._type)
     def run_session(self, name=None, timer_start=None):
-        sessions = os.listdir(PATH_SESSIONS)
+        sessions = get_sessions()
         if not len(sessions):
             simpleautomation.log.log("Aucune session enregistrée ! Utilisez recorder.py pour en créer une !")
             exit()
