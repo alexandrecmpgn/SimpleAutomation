@@ -22,8 +22,8 @@ class PLAYER(object):
             simpleautomation.log.log(action)
             sleep(action.delay + (randint(0, int(self.randomize_sleep * 1000)) / 1000))
             if type(action) == ACTION_KBRD:
-                self.keyboard.press(action.event)
-                self.keyboard.release(action.event)
+                if action.pressed: self.keyboard.press(action.event)
+                else: self.keyboard.release(action.event)
             else:
                 self.mouse.position = (action.x, action.y)
                 if action.pressed: self.mouse.press(action._type)

@@ -42,7 +42,7 @@ class RECORDER(object):
                 self.keyboard_listener.stop()
             else:
                 simpleautomation.log.log("Enregistrement d\'une touche " + str(key.char) + " avec un délai de " + str(_timestamp - self.START_TIMESTAMP) + " secondes...")
-                new_event = ACTION_KBRD(key, _timestamp - self.START_TIMESTAMP)
+                new_event = ACTION_KBRD(key, _timestamp - self.START_TIMESTAMP, 1)
                 self.actions.append(new_event)
         except AttributeError:
             if key == self.stop_key: 
@@ -52,8 +52,19 @@ class RECORDER(object):
                 self.keyboard_listener.stop()
             else:
                 simpleautomation.log.log("Enregistrement d\' une touche spéciale " + str(key) + " avec un délai de " + str(_timestamp - self.START_TIMESTAMP) + " secondes...")
-                new_event = ACTION_KBRD(key, _timestamp - self.START_TIMESTAMP)
+                new_event = ACTION_KBRD(key, _timestamp - self.START_TIMESTAMP, 1)
                 self.actions.append(new_event)
+        self.START_TIMESTAMP = _timestamp
+    def on_release(self, key):
+        _timestamp = time()
+        try:
+            simpleautomation.log.log("Enregistrement d\'une touche " + str(key.char) + " avec un délai de " + str(_timestamp - self.START_TIMESTAMP) + " secondes...")
+            new_event = ACTION_KBRD(key, _timestamp - self.START_TIMESTAMP, 0)
+            self.actions.append(new_event)
+        except:
+            simpleautomation.log.log("Enregistrement d\' une touche spéciale " + str(key) + " avec un délai de " + str(_timestamp - self.START_TIMESTAMP) + " secondes...")
+            new_event = ACTION_KBRD(key, _timestamp - self.START_TIMESTAMP, 0)
+            self.actions.append(new_event)
         self.START_TIMESTAMP = _timestamp
 
     def record_session(self, name=None, overwrite_session=False):
@@ -78,7 +89,7 @@ class RECORDER(object):
             else: pass
 
         self.mouse_listener = mouse.Listener(on_click=self.on_click)
-        self.keyboard_listener = keyboard.Listener(on_press=self.on_press)
+        self.keyboard_listener = keyboard.Listener(on_press=self.on_press, on_release=self.on_release)
         
         self.mouse_listener.start()
         self.keyboard_listener.start()

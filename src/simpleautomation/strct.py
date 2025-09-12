@@ -13,13 +13,15 @@ class SESSION(object):
         self.timer_start = dict["timer_start"]
 
 class ACTION_KBRD(object):
-    def __init__(self, event, delay):
+    def __init__(self, event, delay, pressed):
         self.event = event
         self.delay = delay 
-    def __str__(self): return "[EVENT CLAVIER " + str(self.event) + " AVEC DÉLAI " + str(self.delay) + " sec]"
+        self.pressed = pressed
+    def __str__(self): return "[EVENT CLAVIER " + str(self.event) + " PRESSÉ=" + str(self.pressed) +  " AVEC DÉLAI " + str(self.delay) + " sec]"
     def to_dict(self): return {
         "event" : str(self.event),
-        "delay" : self.delay
+        "delay" : self.delay,
+        "pressed" : self.pressed
     }
 
 class ACTION_MOUSE(object):
