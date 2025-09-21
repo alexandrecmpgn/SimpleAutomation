@@ -3,6 +3,8 @@ from simpleautomation.strct import ACTION_MOUSE, ACTION_KBRD, SESSION
 from simpleautomation.log import log
 import pickle 
 import json
+import pynput.keyboard
+import simpleautomation.vars
 
 def generate_cfg_file(session_name):
     log("Chargement de la session...")
@@ -33,7 +35,7 @@ def update_session_from_cfg_file(session_name):
     f.close()
     log("Fait.")
 def convert_session_to_json(session_name):
-    log("Chargement de la session...")
+    log("Conversion de la session en JSON...")
     try:
         with open(PATH_SESSIONS + session_name + ".pkl", 'rb') as f:
             project = pickle.load(f)
@@ -63,9 +65,20 @@ def load_session_from_json(session_name):
             log(f"Erreur de décodage JSON: {e}")
             return
     session = SESSION()
+    (__vars, __content) = simpleautomation.vars.load_all_vars()
     for obj in objects:
         if len(obj) == LENGTH_ACTION_KBRD:
-            new_action = ACTION_KBRD(obj["event"], obj["delay"])
+            event = obj["event"].replace('\'', '')
+            if "Key" in event: event = getattr(pynput.keyboard.Key, event.split("Key.")[1])
+            if "VAR(" in str(event): 
+                _var = str(event).split("VAR(")[1].split(")")[0]
+                if _var in __vars:
+                    for i in range(0, len(__vars)):
+                        if __vars[i] == _var:
+                            event = __content[i]
+                            simpleautomation.log.log("Variable " + __vars[i] + " chargée !")
+                            break
+            new_action = ACTION_KBRD(event, obj["delay"], obj["pressed"])
         elif len(obj) == LENGTH_ACTION_MOUSE:
             new_action = ACTION_MOUSE(obj["x"], obj["y"], obj["_type"], obj["pressed"], obj["delay"])
         else:

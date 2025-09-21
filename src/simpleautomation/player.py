@@ -11,24 +11,41 @@ import pynput.keyboard, pynput.mouse
 
 from simpleautomation.vars import PATH_SESSIONS, STOP_KEY_FILENAME
 
+import simpleautomation.cfg
+
 class PLAYER(object):
     def __init__(self):
         self.actions = []
         self.randomize_sleep = 0
         self.keyboard = pynput.keyboard.Controller()
         self.mouse = pynput.mouse.Controller()
+        self.name = ""
     def do_actions(self):
         for action in self.actions:
             simpleautomation.log.log(action)
             sleep(action.delay + (randint(0, int(self.randomize_sleep * 1000)) / 1000))
             if type(action) == ACTION_KBRD:
-                if action.pressed: self.keyboard.press(action.event)
-                else: self.keyboard.release(action.event)
+                if len(str(action.event)) > 1 and type(action.event) is str:
+                    # Une variable
+                    v = list(str(action.event))
+                    for nn in range(0, len(v)):
+                        self.keyboard.press(v[nn])
+                        self.keyboard.release(v[nn])
+                else:
+                    if action.pressed: self.keyboard.press(action.event)
+                    else: self.keyboard.release(action.event)
             else:
-                self.mouse.position = (action.x, action.y)
-                if action.pressed: self.mouse.press(action._type)
-                else: self.mouse.release(action._type)
-    def run_session(self, name=None, timer_start=None):
+                if action.pressed == "True": action.pressed = True 
+                if action.pressed == "False": action.pressed = False
+                self.mouse.position = (int(action.x), int(action.y))
+                if action.pressed: self.mouse.press(getattr(pynput.mouse.Button, action._type.split(".")[1]))
+                else: self.mouse.release(getattr(pynput.mouse.Button, action._type.split(".")[1]))
+    def run_session(self, name=None, timer_start=None, cfg_file=True):
+        self.name = name
+        if name is None: return 
+        if cfg_file:
+            simpleautomation.cfg.update_session_from_cfg_file(session_name=name)
+            simpleautomation.cfg.load_session_from_json(session_name=name)
         sessions = get_sessions()
         if not len(sessions):
             simpleautomation.log.log("Aucune session enregistrée ! Utilisez recorder.py pour en créer une !")

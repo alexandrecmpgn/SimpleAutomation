@@ -7,6 +7,12 @@ import simpleautomation.log
 
 keyboard_listener = None
 
+def get_str_stop_key():
+    with open(STOP_KEY_FILENAME, "rb") as f:
+        output = pickle.load(f)
+    f.close()
+    return str(output)
+
 def on_press(key):
     global keyboard_listener
     simpleautomation.log.log("Nouvelle touche d\'arrêt : " + str(key) + " !")
@@ -23,5 +29,5 @@ def main():
     keyboard_listener.start()
     
     simpleautomation.log.log("Pressez la touche qui servira à arrêter l\'enregistrement...")
-    keyboard_listener.join()
+    while keyboard_listener.join(): pass
 

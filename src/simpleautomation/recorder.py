@@ -6,6 +6,7 @@ import os
 from simpleautomation.vars import PATH_SESSIONS, STOP_KEY_FILENAME
 import simpleautomation.log
 from simpleautomation.tools import get_sessions
+import simpleautomation.cfg
 
 class RECORDER(object):
     def __init__(self):
@@ -14,7 +15,7 @@ class RECORDER(object):
         self.mouse_listener = None 
         self.keyboard_listener = None
         self.stop_key = None
-
+        self.name = ""
     def save_data(self): 
         project = SESSION()
         project.actions = self.actions
@@ -31,25 +32,22 @@ class RECORDER(object):
         new_event = ACTION_MOUSE(x, y, button, pressed, _timestamp - self.START_TIMESTAMP)
         self.actions.append(new_event)
         self.START_TIMESTAMP = _timestamp
-
+    def stop_listeners(self):
+        simpleautomation.log.log("Arrêt des listeners...")
+        self.save_data()
+        self.mouse_listener.stop()
+        self.keyboard_listener.stop()
+        self.generate_add_files()
     def on_press(self, key):
         _timestamp = time()
         try:
-            if key == self.stop_key: 
-                simpleautomation.log.log("Arrêt des listeners...")
-                self.save_data()
-                self.mouse_listener.stop()
-                self.keyboard_listener.stop()
+            if key == self.stop_key: self.stop_listeners()
             else:
                 simpleautomation.log.log("Enregistrement d\'une touche " + str(key.char) + " avec un délai de " + str(_timestamp - self.START_TIMESTAMP) + " secondes...")
                 new_event = ACTION_KBRD(key, _timestamp - self.START_TIMESTAMP, 1)
                 self.actions.append(new_event)
         except AttributeError:
-            if key == self.stop_key: 
-                simpleautomation.log.log("Arrêt des listeners...")
-                self.save_data()
-                self.mouse_listener.stop()
-                self.keyboard_listener.stop()
+            if key == self.stop_key: self.stop_listeners()
             else:
                 simpleautomation.log.log("Enregistrement d\' une touche spéciale " + str(key) + " avec un délai de " + str(_timestamp - self.START_TIMESTAMP) + " secondes...")
                 new_event = ACTION_KBRD(key, _timestamp - self.START_TIMESTAMP, 1)
@@ -99,3 +97,7 @@ class RECORDER(object):
 
         self.mouse_listener.join()
         self.keyboard_listener.join()
+    def generate_add_files(self):
+        if self.name != "":
+            simpleautomation.cfg.generate_cfg_file(session_name=self.name)
+            simpleautomation.cfg.convert_session_to_json(session_name=self.name)
